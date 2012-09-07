@@ -3,7 +3,7 @@ Summary:	Desktop client for the Toggle time tracking service
 Name:		toggl-desktop
 Version:	2.5.2.0
 Release:	0.1
-License:	LGPL
+License:	LGPL v2.1
 Group:		X11/Applications
 # bzr branch lp:toggl-desktop # version from version.cpp
 Source0:	%{name}-%{version}.tar.xz
