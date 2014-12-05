@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Toggl Desktop
+Comment=Toggl Timetracker Client
+Exec=TogglDesktop
+Icon=toggldesktop
+Terminal=0
+Type=Application
+Encoding=UTF-8
+Categories=Network;Application;

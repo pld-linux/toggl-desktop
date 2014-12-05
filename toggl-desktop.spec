@@ -14,6 +14,7 @@ Group:		X11/Applications
 # https://www.toggl.com/tour/desktop
 Source0:	https://github.com/toggl/toggldesktop/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	b83b3e97e8aefd6d9280357a541aa2d1
+Source1:	TogglDesktop.desktop
 URL:		https://github.com/toggl/toggldesktop
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5Gui-devel >= %{qtver}
@@ -26,8 +27,9 @@ BuildRequires:	rpmbuild(macros) >= 1.583
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libXScrnSaver-devel
 BuildRequires:	xz
-Requires:	Qt5Core >= %{qtver}
+Requires(post,postun):	/sbin/ldconfig
 Requires:	ca-certificates
+Requires:	desktop-file-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # Unresolved symbols found in: sqlite3_threadsafe
@@ -77,11 +79,26 @@ cp -a third_party/bugsnag-qt/build/release/* \
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libbugsnag-qt.so
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libbugsnag-qt.so.1.0
 
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
+for icon in src/ui/linux/TogglDesktop/icons/*/toggldesktop.png; do
+	size=${icon#src/ui/linux/TogglDesktop/icons/}
+	size=${size%/toggldesktop.png}
+	install -d $RPM_BUILD_ROOT%{_iconsdir}/hicolor/$size
+	cp -p $icon $RPM_BUILD_ROOT%{_iconsdir}/hicolor/$size
+done
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post
+/sbin/ldconfig
+%update_desktop_database
+%update_icon_cache hicolor
+
+%postun
+/sbin/ldconfig
+%update_desktop_database
+%update_icon_cache hicolor
 
 %files
 %defattr(644,root,root,755)
