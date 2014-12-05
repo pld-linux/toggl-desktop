@@ -8,7 +8,7 @@
 Summary:	Desktop client for the Toggle time tracking service
 Name:		toggl-desktop
 Version:	7.1.146
-Release:	0.3
+Release:	0.4
 License:	LGPL v2.1
 Group:		X11/Applications
 # https://www.toggl.com/tour/desktop
@@ -16,6 +16,7 @@ Source0:	https://github.com/toggl/toggldesktop/archive/v%{version}/%{name}-%{ver
 # Source0-md5:	b83b3e97e8aefd6d9280357a541aa2d1
 Source1:	TogglDesktop.desktop
 URL:		https://github.com/toggl/toggldesktop
+Patch0:		ca-cert-path.patch
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5Gui-devel >= %{qtver}
 BuildRequires:	Qt5Network-devel >= %{qtver}
@@ -41,6 +42,7 @@ application supports both the classic Timer and the new Nano.
 
 %prep
 %setup -q -n toggldesktop-%{version}
+%patch0 -p1
 
 %{__sed} -i -e 's,cxx=g++,cxx=$(CXX),' Makefile
 %{__sed} -i -e 's,cflags=-g,cflags=-g $(CXXFLAGS),' Makefile
